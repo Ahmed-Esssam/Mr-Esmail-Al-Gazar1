@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const admin_controller_1 = require("../controllers/admin.controller");
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const role_middleware_1 = require("../middlewares/role.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authMiddleware);
+router.use((0, role_middleware_1.roleMiddleware)('SUPER_ADMIN'));
+router.get('/subjects', admin_controller_1.getSubjects);
+router.get('/dashboard-stats', admin_controller_1.getDashboardStats);
+router.get('/pending-teachers', admin_controller_1.getPendingTeachers);
+router.patch('/approve-teacher/:id', admin_controller_1.approveTeacher);
+router.get('/teachers', (0, admin_controller_1.getUsersByRole)('TEACHER'));
+router.get('/teachers/:id', admin_controller_1.getTeacherById);
+router.get('/students', (0, admin_controller_1.getUsersByRole)('STUDENT'));
+router.get('/students/:id', admin_controller_1.getStudentById);
+router.get('/', admin_controller_1.getAllUsers);
+router.delete('/:userId', admin_controller_1.deleteUser);
+router.patch('/:userId/verify', admin_controller_1.verifyTeacher);
+router.patch('/:userId/permissions', admin_controller_1.updateUserPermissions);
+router.get('/:userId/permissions', admin_controller_1.getUserPermissions);
+exports.default = router;
+//# sourceMappingURL=admin.routes.js.map
